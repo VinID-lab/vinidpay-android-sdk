@@ -2,13 +2,13 @@ package com.example.apptoapptest
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.testsdk.VinIDPayParams
-import kotlinx.android.synthetic.main.activity_main.*
 import com.example.testsdk.VinIDPaySdk
 import com.example.testsdk.utils.VinIDPayConst
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,15 +18,22 @@ class MainActivity : AppCompatActivity() {
         //
         mTxtView.setOnClickListener {
             if (mEditTxt.text.isEmpty()) {
-                Toast.makeText(this, "Ko duoc bo trong order id", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Order id should not be empty", Toast.LENGTH_SHORT).show()
             } else if (mEditTxt2.text.isEmpty()) {
-                Toast.makeText(this, "Ko duoc bo trong signature", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Signature should not be empty", Toast.LENGTH_SHORT).show()
             } else {
                 val params = VinIDPayParams.Builder()
                     .setOrderId(mEditTxt.text.toString())
                     .setSignature(mEditTxt2.text.toString())
                     .build()
-                VinIDPaySdk.getInstance(params).startPaymentForResult(this)
+                try {
+                    VinIDPaySdk
+                        .setParams(params)
+                        .startPaymentForResult(this)
+
+                } catch (e: IllegalArgumentException) {
+                    e.printStackTrace()
+                }
             }
         }
     }
