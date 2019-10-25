@@ -17,22 +17,33 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         //
         mTxtView.setOnClickListener {
-            if (mEditTxt.text.isEmpty()) {
-                Toast.makeText(this, "Order id should not be empty", Toast.LENGTH_SHORT).show()
-            } else if (mEditTxt2.text.isEmpty()) {
-                Toast.makeText(this, "Signature should not be empty", Toast.LENGTH_SHORT).show()
-            } else {
-                val params = VinIDPayParams.Builder()
-                    .setOrderId(mEditTxt.text.toString())
-                    .setSignature(mEditTxt2.text.toString())
-                    .build()
-                try {
-                    VinIDPaySdk
-                        .setParams(params)
-                        .startPaymentForResult(this)
+            when {
+                mEditTxt.text.isEmpty() -> Toast.makeText(
+                    this,
+                    "Order id should not be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
 
-                } catch (e: IllegalArgumentException) {
-                    e.printStackTrace()
+                mEditTxt2.text.isEmpty() -> Toast.makeText(
+                    this,
+                    "Signature should not be empty",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                else -> {
+                    val params = VinIDPayParams.Builder()
+                        .setOrderId(mEditTxt.text.toString())
+                        .setSignature(mEditTxt2.text.toString())
+                        .build()
+
+                    try {
+                        VinIDPaySdk.Builder()
+                            .setParams(params)
+                            .build()
+                            .startPaymentForResult(this)
+                    } catch (e: IllegalArgumentException) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }

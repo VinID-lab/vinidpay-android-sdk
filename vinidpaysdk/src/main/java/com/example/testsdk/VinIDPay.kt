@@ -13,18 +13,25 @@ import com.example.testsdk.utils.VinIDPayConst
  *
  * Copyright (c) 2019 VinID. All rights reserved.
  */
-object VinIDPaySdk {
+class VinIDPaySdk internal constructor(private val params: VinIDPayParams) {
 
-    private var params: VinIDPayParams? = null
+    class Builder {
+        var params: VinIDPayParams? = null
 
-    /**
-     * Set params for the SDK before startPayment
-     * @param params created by using VinIDPayParams.Builder()
-     * @return
-     */
-    fun setParams(params: VinIDPayParams): VinIDPaySdk {
-        this.params = params
-        return this
+        /**
+         * Set params for the SDK before startPayment
+         * @param params created by using VinIDPayParams.Builder()
+         * @return
+         */
+        fun setParams(params: VinIDPayParams): Builder {
+            this.params = params
+            return this
+        }
+
+        fun build(): VinIDPaySdk {
+            requireNotNull(params) { "${javaClass::getSimpleName}: params must not be null" }
+            return VinIDPaySdk(params!!)
+        }
     }
 
     /**
