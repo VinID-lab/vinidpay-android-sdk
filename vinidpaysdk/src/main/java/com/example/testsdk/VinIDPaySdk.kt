@@ -21,13 +21,17 @@ class VinIDPaySdk internal constructor(private val params: VinIDPayParams) {
         /**
          * Set params for the SDK before startPayment
          * @param params created by using VinIDPayParams.Builder()
-         * @return
+         * @return builder
          */
         fun setParams(params: VinIDPayParams): Builder {
             this.params = params
             return this
         }
 
+        /**
+         * Build VinIDPaySdk using defined params
+         * @return VinIDPaySdk object
+         */
         fun build(): VinIDPaySdk {
             requireNotNull(params) { "${javaClass::getSimpleName}: params must not be null" }
             return VinIDPaySdk(params!!)
@@ -48,10 +52,8 @@ class VinIDPaySdk internal constructor(private val params: VinIDPayParams) {
      *
      */
     fun startPaymentForResult(activity: Activity) {
-        requireNotNull(params) { "${javaClass::getSimpleName}: params must not be null" }
-
         if (isVinIdAppInstalled(activity)) {
-            startPayment(activity, params!!)
+            startPayment(activity, params)
         } else {
             openVinIDInstallPage(activity)
         }
@@ -60,10 +62,12 @@ class VinIDPaySdk internal constructor(private val params: VinIDPayParams) {
     private fun startPayment(activity: Activity, params: VinIDPayParams) {
         val uri = Uri.Builder().scheme(VinIDPayConst.SCHEMA).authority(VinIDPayConst.HOST)
             .appendPath(VinIDPayConst.PATH_CHECKOUT)
-        val intent = Intent()
-        intent.putExtra(VinIDPayParams.EXTRA_ORDER_ID, params.orderId)
-        intent.putExtra(VinIDPayParams.EXTRA_SIGNATURE, params.signature)
-        intent.data = uri.build()
+        val intent = Intent().apply {
+            putExtra(VinIDPayParams.EXTRA_ORDER_ID, params.orderId)
+            putExtra(VinIDPayParams.EXTRA_SIGNATURE, params.signature)
+            data = uri.build()
+        }
+
         activity.startActivityForResult(intent, VinIDPayConst.REQUEST_CODE_VINIDPAY_PAY)
     }
 
