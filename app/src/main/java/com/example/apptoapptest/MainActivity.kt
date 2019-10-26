@@ -1,5 +1,6 @@
 package com.example.apptoapptest
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -15,15 +16,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //
-        mTxtView.setOnClickListener {
+        mCheckoutBtn.setOnClickListener {
             when {
-                mEditTxt.text.isEmpty() -> Toast.makeText(
+                mOrderIdEditText.text.isEmpty() -> Toast.makeText(
                     this,
                     "Order id should not be empty",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                mEditTxt2.text.isEmpty() -> Toast.makeText(
+                mSignatureEditText.text.isEmpty() -> Toast.makeText(
                     this,
                     "Signature should not be empty",
                     Toast.LENGTH_SHORT
@@ -31,8 +32,8 @@ class MainActivity : AppCompatActivity() {
 
                 else -> {
                     val params = VinIDPayParams.Builder()
-                        .setOrderId(mEditTxt.text.toString())
-                        .setSignature(mEditTxt2.text.toString())
+                        .setOrderId(mOrderIdEditText.text.toString())
+                        .setSignature(mSignatureEditText.text.toString())
                         .build()
 
                     try {
@@ -52,23 +53,33 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == VinIDPayConstants.REQUEST_CODE_VINIDPAY_PAY) {
             when (resultCode) {
-                VinIDPayConstants.ORDER_STATUS_SUCCESS -> {
-                    // SUCCESS
-                    returnedValue.text = "SUCCESS"
-                }
+                Activity.RESULT_OK -> {
+                    val transactionStatus =
+                        data?.getStringExtra(VinIDPayConstants.EXTRA_RETURN_TRANSACTION_STATUS)
+                    transactionStatus?.let { status ->
+                        when (status) {
+                            VinIDPayConstants.TRANSACTION_SUCCESS -> mStatusTextView.text =
+                                "SUCCESS"
 
-                VinIDPayConstants.ORDER_STATUS_CANCELED -> {
-                    // CANCELED
-                    returnedValue.text = "CANCELED"
-                }
+                            VinIDPayConstants.TRANSACTION_ABORT -> mStatusTextView.text =
+                                "CANCELED"
 
-                else -> {
-                    // FAILED
-                    returnedValue.text =
-                        data?.getStringExtra(VinIDPayConstants.EXTRA_STRING_ORDER_STATUS)
+                            VinIDPayConstants.TRANSACTION_FAIL -> {
+                                mStatusTextView.text =
+                                    "FAILED with ERROR CODE: ${data.getIntExtra(
+                                        VinIDPayConstants.EXTRA_RETURN_ERROR_CODE,
+                                        0
+                                    )}"
+                            }
+
+                            else -> {
+                                // Defined later
+                            }
+
+                        }
+                    }
                 }
             }
         }
-
     }
 }

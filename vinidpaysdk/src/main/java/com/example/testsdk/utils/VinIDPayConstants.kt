@@ -20,10 +20,17 @@ class VinIDPayConstants {
         const val VINID_INSTALL_PACKAGE_NAME_DEV = "com.vingroup.vinid.uat"
 
         // extra keys when get result from resultIntent
-        const val EXTRA_ORDER_STATUS = "EXTRA_ORDER_STATUS"
-        const val EXTRA_STRING_ORDER_STATUS = "EXTRA_STRING_ORDER_STATUS"
-        const val ORDER_STATUS_FAILED = 0
-        const val ORDER_STATUS_SUCCESS = 1
-        const val ORDER_STATUS_CANCELED = 2
+        const val EXTRA_RETURN_TRANSACTION_STATUS = "EXTRA_RETURN_TRANSACTION_STATUS"
+        const val EXTRA_RETURN_ERROR_CODE = "EXTRA_RETURN_ERROR_CODE"
+        // error code
+        const val ERROR_ORDER_ID_NULL = 4002492
+        const val ERROR_SIGNATURE_NULL = 4002493
+        // transaction status
+        const val TRANSACTION_PROCESSING = "PROCESSING"
+        const val TRANSACTION_SUCCESS = "SUCCESS"
+        const val TRANSACTION_FAIL = "FAIL"
+        const val TRANSACTION_INIT = "INIT"
+        const val TRANSACTION_HOLDING = "HOLDING"
+        const val TRANSACTION_ABORT = "ABORT" // use for app to app when user abort payment
     }
 }
