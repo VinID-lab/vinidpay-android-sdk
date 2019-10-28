@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         VinIDPaySdk.Builder()
                             .setVinIDPayParams(params)
-                            .setEnvironmentMode(VinIDPaySdk.EnvironmentMode.DEV)
+//                            .setEnvironmentMode(VinIDPaySdk.EnvironmentMode.DEV)
                             .build()
                             .startPaymentForResult(this)
                     } catch (e: IllegalArgumentException) {
