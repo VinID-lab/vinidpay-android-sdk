@@ -1,10 +1,10 @@
-package com.example.testsdk
+package com.vinid.paysdk
 
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import com.example.testsdk.utils.VinIDPayConstants
+import com.vinid.paysdk.utils.VinIDPayConstants
 
 /**
  * Main class to start payment with VinID app
@@ -20,7 +20,8 @@ class VinIDPaySdk internal constructor(
 
     class Builder {
         private var params: VinIDPayParams? = null
-        private var environmentMode: EnvironmentMode = EnvironmentMode.PRODUCTION
+        private var environmentMode: EnvironmentMode =
+            EnvironmentMode.PRODUCTION
 
         /**
          * Set params for the SDK before startPayment
@@ -75,7 +76,8 @@ class VinIDPaySdk internal constructor(
     }
 
     private fun startPayment(activity: Activity, params: VinIDPayParams) {
-        val uri = Uri.Builder().scheme(VinIDPayConstants.SCHEMA).authority(VinIDPayConstants.HOST)
+        val uri = Uri.Builder().scheme(VinIDPayConstants.SCHEMA).authority(
+            VinIDPayConstants.HOST)
             .appendPath(VinIDPayConstants.PATH_CHECKOUT)
         val intent = Intent().apply {
             putExtra(VinIDPayParams.EXTRA_ORDER_ID, params.orderId)

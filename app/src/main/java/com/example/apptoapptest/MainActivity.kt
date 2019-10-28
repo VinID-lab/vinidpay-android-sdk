@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.testsdk.VinIDPayParams
-import com.example.testsdk.VinIDPaySdk
-import com.example.testsdk.utils.VinIDPayConstants
+import com.vinid.paysdk.VinIDPayParams
+import com.vinid.paysdk.VinIDPaySdk
+import com.vinid.paysdk.utils.VinIDPayConstants
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +39,7 @@ class MainActivity : AppCompatActivity() {
                     try {
                         VinIDPaySdk.Builder()
                             .setVinIDPayParams(params)
+                            .setEnvironmentMode(VinIDPaySdk.EnvironmentMode.DEV)
                             .build()
                             .startPaymentForResult(this)
                     } catch (e: IllegalArgumentException) {

@@ -1,4 +1,4 @@
-package com.example.testsdk.utils
+package com.vinid.paysdk.utils
 
 /**
  * Contains constants for VinID Pay SDK

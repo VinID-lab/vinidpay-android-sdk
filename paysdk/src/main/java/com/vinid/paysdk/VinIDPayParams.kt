@@ -1,4 +1,4 @@
-package com.example.testsdk
+package com.vinid.paysdk
 
 import java.lang.IllegalArgumentException
 
