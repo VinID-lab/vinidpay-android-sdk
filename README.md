@@ -4,7 +4,7 @@ VinIDPay Android SDK helps you handle payments with VinID Android app.
 
 ## Requirements
 - Minimum SDK version: 16
-- Recommend SDK version: 21
+- Recommend SDK version: 21 // Current minimum SDK version of VinID App
 - Minimum VinID App's version: // TBD
 
 ## Installation
