@@ -35,7 +35,7 @@ Recommended requirement:
 - Gradle 5.4.1
 
 ## Usage
-The current version only supports Checkout flow. You can check out and order by 2 following steps:
+The current version only supports Checkout flow by 2 following steps:
 
 - Step 1: Create Checkout params:
 
