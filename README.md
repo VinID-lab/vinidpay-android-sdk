@@ -119,5 +119,4 @@ If you want to test the transaction on our UAT app (Dev version), you can set En
 
 By default, the SDK will set to `VinIDPaySdk.EnvironmentMode.PRODUCTION`.
 
-*NOTE: This mode is only used to check if DEV/PROD VinID app is installed or not and wont affect to your checkout flow. It means the deeplink you send can be handled by both
- by both DEV and PROD app.*
+*NOTE: This mode is only used to check if DEV/PROD VinID app is installed or not and wont affect to your checkout flow. It means the deeplink you send can be handled by both DEV and PROD app.*
