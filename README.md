@@ -15,11 +15,11 @@ In root project's `build.gradle`:
 
 ```
 allprojects {
-		repositories {
-			...
-			maven { url "https://android-nexus.vinid.dev/repository/android-bifrost/" }
-		}
+	repositories {
+		...
+		maven { url "https://android-nexus.vinid.dev/repository/android-bifrost/" }
 	}
+}
 ```
 
 In app's `build.gradle`:
