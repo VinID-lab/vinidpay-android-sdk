@@ -11,17 +11,23 @@ VinIDPay Android SDK helps you handle payments with VinID Android app.
 
 #### Remote Repo
 
-In project's `build.gradle`:
+In root project's `build.gradle`:
+
 ```
-// TBD
+allprojects {
+		repositories {
+			...
+			maven { url "https://android-nexus.vinid.dev/repository/android-bifrost/" }
+		}
+	}
 ```
 
 In app's `build.gradle`:
 
 ```
 dependencies {
-    // implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    // SDK TBD
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.0"
     ...
 }
 ```
