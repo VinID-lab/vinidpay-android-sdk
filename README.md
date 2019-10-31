@@ -27,7 +27,7 @@ In app's `build.gradle`:
 ```
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.0"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.1"
     ...
 }
 ```
@@ -70,22 +70,26 @@ When the flow is finished (Which can be SUCCESS/FAILED/ABORTED), you can handle 
         if (requestCode == VinIDPayConstants.REQUEST_CODE_VINIDPAY_PAY) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
-                    val transactionStatus =
-                        data?.getStringExtra(VinIDPayConstants.EXTRA_RETURN_TRANSACTION_STATUS)
+                    val transactionStatus = data?.getStringExtra(VinIDPayConstants.EXTRA_RETURN_TRANSACTION_STATUS)
                     transactionStatus?.let { status ->
                         when (status) {
-                            VinIDPayConstants.TRANSACTION_SUCCESS -> mStatusTextView.text =
-                                "SUCCESS"
+                            VinIDPayConstants.TRANSACTION_SUCCESS -> mStatusTextView.text = "SUCCESS"
 
-                            VinIDPayConstants.TRANSACTION_ABORT -> mStatusTextView.text =
-                                "CANCELED"
+                            VinIDPayConstants.TRANSACTION_ABORT -> mStatusTextView.text = "ABORT"
 
                             VinIDPayConstants.TRANSACTION_FAIL -> {
-                                mStatusTextView.text =
-                                    "FAILED with ERROR CODE: ${data.getIntExtra(
+                                val text = "FAIL"
+                                val errCode = data.getIntExtra(
                                         VinIDPayConstants.EXTRA_RETURN_ERROR_CODE,
                                         0
-                                    )}"
+                                )
+                                val errMessage = data.getStringExtra(
+                                        VinIDPayConstants.EXTRA_RETURN_ERROR_MESSAGE
+                                )
+
+                                mStatusTextView.text = "$text" +
+                                        if (errCode != 0) "\n$errCode" else "" +
+                                                if (!errMessage.isNullOrEmpty()) "\n$errMessage" else ""
                             }
 
                             else -> {
@@ -106,11 +110,14 @@ At current version, we always `return resultCode == Activity.RESULT_OK`, and you
 data?.getStringExtra(VinIDPayConstants.EXTRA_RETURN_TRANSACTION_STATUS)
 ```
 
-In case the `transactionResult == VinIDPayConstants.TRANSACTION_FAIL`, you can check the error code:
+In case the `transactionResult == VinIDPayConstants.TRANSACTION_FAIL`, you can check the error code & error Message:
 
 ```kotlin
-data.getIntExtra(VinIDPayConstants.EXTRA_RETURN_ERROR_CODE,0)
+val errCode = data.getIntExtra(VinIDPayConstants.EXTRA_RETURN_ERROR_CODE,0)
+val errMessage = data.getStringExtra(VinIDPayConstants.EXTRA_RETURN_ERROR_MESSAGE)
 ```
+
+Note: However error code & error message is empty in somecase, we will improve in the future.
 
 ## Sandbox mode (Development Mode)
 If you want to test the transaction on our UAT app (Dev version), you can set Environment mode param while building `VinIDPaySdk`:
