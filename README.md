@@ -27,7 +27,7 @@ In app's `build.gradle`:
 ```
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.1"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.2"
     ...
 }
 ```
@@ -52,22 +52,22 @@ The current version only supports Checkout flow by 2 following steps:
     .build()
 ```
 
-- Step 2: pass params to`VinIDPaySdk` and start Checkout flow from VinID App:
+- Step 2: pass params to`VinIDPaySdk` and start Checkout flow from VinID App  with `requestCode = VinIDPayConstants.REQUEST_CODE_VINIDPAY_PAY` or you can pass your own Request Code:
 
 ```kotlin
   VinIDPaySdk.Builder()
     .setVinIDPayParams(params)
     .build()
-    .startPaymentForResult(YourActivity.this)
+    .startPaymentForResult(YourActivity.this, requestCode = REQUESTCODE) 	// Default value: VinIDPayConstants.REQUEST_CODE_VINIDPAY_PAY
 ```
 
 `startPaymentForResult()` will run a Deeplink and forward you to Checkout flow of VinID app installed in your device. 
-When the flow is finished (Which can be SUCCESS/FAILED/ABORTED), you can handle the result by using `onActivityResult()` with `requestCode == inIDPayConstants.REQUEST_CODE_VINIDPAY_PAY`:
+When the flow is finished (Which can be SUCCESS/FAILED/ABORTED), you can handle the result by using `onActivityResult()`:
 
 ```kotlin
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == VinIDPayConstants.REQUEST_CODE_VINIDPAY_PAY) {
+        if (requestCode == REQUESTCODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
                     val transactionStatus = data?.getStringExtra(VinIDPayConstants.EXTRA_RETURN_TRANSACTION_STATUS)
@@ -118,6 +118,36 @@ val errMessage = data.getStringExtra(VinIDPayConstants.EXTRA_RETURN_ERROR_MESSAG
 ```
 
 Note: However error code & error message is empty in somecase, we will improve in the future.
+
+## Build Intent
+
+If you don't want call `startPaymentForResult()` directly, we support building Intent only and you can call `startActivityForResult()` anywhere you want:
+
+```kotlin
+val intent = VinIDPaySdk.Builder()
+    .setVinIDPayParams(params)
+    .setEnvironmentMode(EnvironmentMode.DEV)
+    .build()
+    .toIntent()
+
+...
+```
+
+## Utilities:
+
+We support some utility methods to help you work better with VinID SDK:
+
+- Validate if VinID App is installed or not. `environmentMode` is optional, by default it will check PROD app:
+
+```kotlin
+VinIDPaySdk.isVinIdAppInstalled(this, environmentMode = EnvironmentMode.DEV)
+```
+
+- open VinID App on Store:
+
+```kotlin
+VinIDPaySdk.openVinIDInstallPage(activity, environmentMode)
+```
 
 ## Sandbox mode (Development Mode)
 If you want to test the transaction on our UAT app (Dev version), you can set Environment mode param while building `VinIDPaySdk`:
