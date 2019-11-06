@@ -135,17 +135,18 @@ val intent = VinIDPaySdk.Builder()
 
 ## Add extra data
 
-In case you want to add your personal data to the result, you can add while building intent:
+In case you want to add your personal data to the result, you can add while building intent. We will add them all into a single JSONObject string:
 
 ```kotlin
 val sdk = VinIDPaySdk.Builder()
     .setVinIDPayParams(params)
-    .setExtraParam("EXTRA_NAME", "Sample Name")     <--- ADD HERE
+    .setExtraParam("name", "Sample Name")     <--- ADD KEY/VALUE HERE
+    .setExtraParam("desc", "Sample Desc")     <--- ADD KEY/VALUE HERE
     .setEnvironmentMode(EnvironmentMode.DEV)
     .build()
 ```
 
-And you can get them in `onActivityResult()`:
+And you can convert them back in `onActivityResult()`:
 
 ```kotlin
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -153,7 +154,7 @@ And you can get them in `onActivityResult()`:
         if (requestCode == VINID_REQUEST_CODE) {
             ...
 
-		val extraData = data.getStringExtra(VinIDPayParams.EXTRA_DATA)
+		val extraData : String = data.getStringExtra(VinIDPayParams.EXTRA_DATA) // Value : "{"name":"Sample Name","desc":"Sample Desc"}"
         }
     }
 ```
