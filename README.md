@@ -27,7 +27,7 @@ In app's `build.gradle`:
 ```
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.2"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.3"
     ...
 }
 ```
@@ -131,6 +131,31 @@ val intent = VinIDPaySdk.Builder()
     .toIntent()
 
 ...
+```
+
+## Add extra data
+
+In case you want to add your personal data to the result, you can add while building intent:
+
+```kotlin
+val sdk = VinIDPaySdk.Builder()
+    .setVinIDPayParams(params)
+    .setExtraParam("EXTRA_NAME", "Sample Name")     <--- ADD HERE
+    .setEnvironmentMode(EnvironmentMode.DEV)
+    .build()
+```
+
+And you can get them in `onActivityResult()`:
+
+```kotlin
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == VINID_REQUEST_CODE) {
+            ...
+
+		val extraData = data.getStringExtra(VinIDPayParams.EXTRA_DATA)
+        }
+    }
 ```
 
 ## Utilities:
