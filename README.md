@@ -17,7 +17,16 @@ In root project's `build.gradle`:
 allprojects {
 	repositories {
 		...
-		maven { url "https://android-nexus.vinid.dev/repository/android-bifrost/" }
+		maven {
+		    credentials {
+			username = "guest"
+			password = "Guest@123"
+		    }
+		    authentication {
+			basic(BasicAuthentication)
+		    }
+		    url "https://android-nexus.vinid.dev/repository/android-bifrost/"
+		}
 	}
 }
 ```
