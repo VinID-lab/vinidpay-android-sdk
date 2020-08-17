@@ -36,12 +36,14 @@ In app's `build.gradle`:
 ```
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.5"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.6"
     ...
 }
 ```
 
-*NOTE: Because this SDK is written in Kotlin so make sure your app supports kotlin's standard lib.*
+*NOTE: 
+- Because this SDK is written in Kotlin so make sure your app supports kotlin's standard lib.*
+- If you use version 1.0.6 or later, please use `com.vingroup.vinid.sandbox` instead of `com.vingroup.vinid.uat`
 
 #### Manual Install
 
