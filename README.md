@@ -36,7 +36,7 @@ In app's `build.gradle`:
 ```
 dependencies {
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "com.vingroup.vinid.pay:pay-sdk:1.0.8"
+    implementation "com.vingroup.vinid.pay:pay-sdk:1.1.0
     ...
 }
 ```
